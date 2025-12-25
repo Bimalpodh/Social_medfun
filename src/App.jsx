@@ -1,17 +1,15 @@
-
-import './App.css'
+import Layout from "./components/layout/Layout"
 
 function App() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <h1 className="text-3xl font-bold text-primary">
-        Tailwind is working 🚀
-      </h1>
-    </div>
+    <Layout>
+      <div className="p-6">
+        <h1 className="text-2xl font-bold">
+          Home Feed
+        </h1>
+      </div>
+    </Layout>
   );
 }
 
 export default App;
-
-
-
