@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useState } from "react";
-import { Heart, MessageSquare, Share2 } from "lucide-react";
+import { Heart, MessageSquare, Share2, Bookmark } from "lucide-react";
+import { useSavedPosts } from "../../hooks/useSavedPosts";
 
 /**
  * PostCard
@@ -16,6 +17,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Send } from "lucide-react";
 
 function PostCard({ post }) {
+  const { isSaved, toggleSave } = useSavedPosts();
+  const saved = isSaved(post.id);
+
   const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState(post.likes ?? 0);
   const [isCommentsOpen, setIsCommentsOpen] = useState(false);
@@ -165,8 +169,19 @@ function PostCard({ post }) {
               </button>
             </div>
 
-            {/* optional secondary actions or dropdown placeholder */}
-            <div className="text-xs text-slate-400"> </div>
+            {/* Save Button */}
+            <button
+              type="button"
+              aria-label={saved ? "Remove from saved" : "Save post"}
+              onClick={() => toggleSave(post.id)}
+              className={`p-2 rounded-full transition-all duration-300 hover:scale-110 active:scale-95 focus:outline-none focus:ring-2 focus:ring-amber-500/50 border border-transparent ${
+                saved 
+                  ? "text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]" 
+                  : "text-slate-400 hover:text-amber-400 hover:bg-slate-800 hover:border-slate-700/50 hover:shadow-[0_0_10px_rgba(251,191,36,0.1)]"
+              }`}
+            >
+              <Bookmark className={`w-5 h-5 transition-colors ${saved ? "fill-amber-400 text-amber-400" : ""}`} />
+            </button>
           </div>
         </div>
       </div>

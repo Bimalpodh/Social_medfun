@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -62,19 +63,19 @@ export default function StoryViewer({ stories, initialUserIndex, onClose }) {
     }
   };
 
-  return (
+  const modalContent = (
     <AnimatePresence>
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.95 }}
         transition={{ duration: 0.2 }}
-        className="fixed inset-0 z-50 bg-black flex flex-col sm:p-4 text-white"
+        className="fixed inset-0 z-[100] bg-black flex flex-col sm:p-4 text-white"
       >
         {/* Global Close Button */}
         <button 
           onClick={onClose}
-          className="absolute top-4 right-4 sm:top-6 sm:right-6 z-[60] flex items-center justify-center p-3 sm:p-4 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full transition-colors border border-white/20 text-white shadow-xl cursor-pointer"
+          className="absolute top-4 right-4 sm:top-6 sm:right-6 z-[110] flex items-center justify-center p-3 sm:p-4 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full transition-colors border border-white/20 text-white shadow-xl cursor-pointer"
           title="Close"
         >
           <X className="w-6 h-6 sm:w-8 sm:h-8" />
@@ -129,4 +130,6 @@ export default function StoryViewer({ stories, initialUserIndex, onClose }) {
       </motion.div>
     </AnimatePresence>
   );
+
+  return createPortal(modalContent, document.body);
 }

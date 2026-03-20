@@ -73,16 +73,14 @@ export default function StoryBar() {
 
   return (
     <>
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl shadow-lg mb-4 p-4 overflow-hidden relative group/storybar">
-        {/* Subtle background glow */}
-        <div className="absolute -inset-4 bg-gradient-to-r from-cyan-500/5 to-purple-500/5 blur-xl pointer-events-none opacity-0 group-hover/storybar:opacity-100 transition-opacity duration-700"></div>
-        <ul className="flex space-x-4 overflow-x-auto pb-2 custom-scrollbar touch-pan-x relative z-10">
+      <div className="bg-white rounded-xl shadow-sm mb-4 p-4 overflow-hidden">
+        <ul className="flex space-x-4 overflow-x-auto pb-2 scrollbar-hide touch-pan-x">
           {MOCK_STORIES.map((storyUser, index) => (
-            <li key={storyUser.id} className="flex flex-col items-center space-y-1 flex-shrink-0 cursor-pointer w-16 group" onClick={() => openStory(index)}>
+            <li key={storyUser.id} className="flex flex-col items-center space-y-1 flex-shrink-0 cursor-pointer w-16" onClick={() => openStory(index)}>
               <div className="relative">
                 {/* Gradient Ring */}
-                <div className={`p-[2px] rounded-full ${storyUser.hasUnseen ? 'bg-gradient-to-tr from-cyan-400 via-purple-500 to-rose-500 shadow-[0_0_10px_rgba(34,211,238,0.5)]' : 'bg-slate-700'} transition-transform duration-300 group-hover:scale-105`}>
-                  <div className="bg-slate-900 p-[2px] rounded-full">
+                <div className={`p-[2px] rounded-full ${storyUser.hasUnseen ? 'bg-gradient-to-tr from-yellow-400 via-rose-500 to-fuchsia-600' : 'bg-slate-200'} transition-transform hover:scale-105`}>
+                  <div className="bg-white p-[2px] rounded-full">
                     <img
                       src={storyUser.avatar}
                       alt={storyUser.username}
@@ -94,12 +92,12 @@ export default function StoryBar() {
 
                 {/* Add Icon for Current User */}
                 {storyUser.isCurrentUser && (
-                  <div className="absolute -bottom-1 -right-1 bg-cyan-500 text-slate-950 rounded-full border-[3px] border-slate-900 p-0.5 shadow-[0_0_8px_rgba(34,211,238,0.8)] z-10">
-                    <Plus className="w-3 h-3 font-bold" strokeWidth={3} />
+                  <div className="absolute bottom-1 right-0 bg-blue-500 text-white rounded-full border-2 border-white p-0.5 shadow-sm">
+                    <Plus className="w-3 h-3" strokeWidth={3} />
                   </div>
                 )}
               </div>
-              <span className={`text-[11px] font-bold truncate w-full text-center mt-1 transition-colors ${storyUser.hasUnseen ? 'text-slate-200' : 'text-slate-500 group-hover:text-slate-300'}`}>
+              <span className="text-[11px] font-medium text-slate-700 truncate w-full text-center">
                 {storyUser.username}
               </span>
             </li>

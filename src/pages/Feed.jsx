@@ -9,7 +9,7 @@ import StoryBar from "../components/story/StoryBar";
  * - Implements infinite scroll with react-intersection-observer
  */
 
-const INITIAL_MOCK_POSTS = [
+export const INITIAL_MOCK_POSTS = [
   {
     id: "1",
     author: { name: "Asha Varma", avatar: "ram1.jpg" },
