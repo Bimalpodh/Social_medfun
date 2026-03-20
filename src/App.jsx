@@ -1,13 +1,22 @@
-import Layout from "./components/layout/Layout"
+import { Navigate, Route, Routes } from "react-router-dom";
+import Layout from "./components/layout/Layout";
+import Feed from "./pages/Feed";
+import Explore from "./pages/Explore";
+import { Message } from "./pages/Message";
+import Profile from "./pages/Profile";
+import Saved from "./pages/Saved"
 
 function App() {
   return (
     <Layout>
-      <div className="p-6">
-        <h1 className="text-2xl font-bold">
-          Home Feed
-        </h1>
-      </div>
+      <Routes>
+        <Route path="/" element={<Navigate to="/feed" />}/>
+        <Route path="/feed" element={<Feed/>}/>
+        <Route path="/explore" element={<Explore/>}/>
+        <Route path="/message" element={<Message/>}/>
+        <Route path="/profile" element={<Profile/>}/>
+        <Route path="/saved" element={<Saved/>}/> 
+      </Routes>
     </Layout>
   );
 }
