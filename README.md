@@ -40,16 +40,16 @@ npm install
 Create a `.env` file in the root directory and add your credentials:
 
 ```env
-VITE_FIREBASE_API_KEY=your_api_key
-VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
-VITE_FIREBASE_PROJECT_ID=your_project_id
-VITE_FIREBASE_STORAGE_BUCKET=your_storage_bucket
-VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
-VITE_FIREBASE_APP_ID=your_app_id
-VITE_FIREBASE_MEASUREMENT_ID=your_measurement_id
+VITE_FIREBASE_API_KEY=MY_api_key
+VITE_FIREBASE_AUTH_DOMAIN=MY_auth_domain
+VITE_FIREBASE_PROJECT_ID=MY_project_id
+VITE_FIREBASE_STORAGE_BUCKET=MY_storage_bucket
+VITE_FIREBASE_MESSAGING_SENDER_ID=MY_sender_id
+VITE_FIREBASE_APP_ID=MY_app_id
+VITE_FIREBASE_MEASUREMENT_ID=MY_measurement_id
 
-VITE_CLOUDINARY_CLOUD_NAME=your_cloud_name
-VITE_CLOUDINARY_UPLOAD_PRESET=your_upload_preset
+VITE_CLOUDINARY_CLOUD_NAME=MY_cloud_name
+VITE_CLOUDINARY_UPLOAD_PRESET=MY_upload_preset
 ```
 
 ### 4. Run Locally
