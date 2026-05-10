@@ -1,5 +1,5 @@
 import React, { useEffect, createContext, useContext } from 'react';
-import { onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged, updateProfile } from 'firebase/auth';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { useDispatch, useSelector } from 'react-redux';
 import { auth, db } from '../services/firebase';
@@ -63,7 +63,6 @@ export function AuthProvider({ children }) {
   const register = async (email, password, name) => {
     const userCredential = await registerWithEmail(email, password);
     if (name) {
-      const { updateProfile } = await import('firebase/auth');
       await updateProfile(userCredential.user, { displayName: name });
     }
     
