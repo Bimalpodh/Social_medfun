@@ -1,121 +1,84 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import PostCard from "../components/post/PostCard";
 import StoryBar from "../components/story/StoryBar";
-
-/**
- * Feed page
- * - Renders a list of PostCard components
- * - Implements infinite scroll with react-intersection-observer
- */
-
-export const INITIAL_MOCK_POSTS = [
-  {
-    id: "1",
-    author: { name: "Asha Varma", avatar: "ram1.jpg" },
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(), // 2 hours ago
-    text: "Just finished a morning run — feeling energized! Who else is up for a weekend hike?",
-    imageUrl: "download.jpg",
-    likes: 12,
-    comments: 3,
-  },
-  {
-    id: "2",
-    author: { name: "Jon Doe", avatar: "ram2.jpg" },
-    timestamp: new Date(Date.now() - 1000 * 60 * 30).toISOString(), // 30 minutes ago
-    text: "Sharing a quick tip: Always prioritize readability over cleverness in your code.",
-    likes: 5,
-    comments: 1,
-  },
-  {
-    id: "3",
-    author: { name: "Priya Singh", avatar: "jaishreeram.jpg" },
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3).toISOString(), // 3 days ago
-    text: "Excited to announce my new project — built with love and Tailwind CSS ❤️",
-    imageUrl: "c.jpg",
-    likes: 48,
-    comments: 12,
-  },
-];
-
-// Helper to generate more dummy posts
-const generateMorePosts = (startIndex) => {
-  return Array.from({ length: 3 }).map((_, i) => ({
-    id: `generated-${startIndex + i}`,
-    author: { 
-      name: `User ${startIndex + i}`, 
-      avatar: `https://i.pravatar.cc/150?u=${startIndex + i}` 
-    },
-    timestamp: new Date(Date.now() - 1000 * 60 * 5 * (startIndex + i)).toISOString(),
-    text: `This is a dynamically loaded post #${startIndex + i}. Infinite scrolling in action! 🚀`,
-    likes: Math.floor(Math.random() * 100),
-    comments: Math.floor(Math.random() * 20),
-  }));
-};
+import { usePosts } from "../hooks/usePosts";
+import { PostSkeleton } from "../components/Utils/Skeleton";
 
 export default function Feed() {
-  const [posts, setPosts] = useState(INITIAL_MOCK_POSTS);
-  const [isLoading, setIsLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
-
-  // useInView hook sets 'ref' to the element we want to observe, and 'inView' tells us if it's visible
+  const { posts, loading, loadingMore, error, hasMore, loadMore } = usePosts(5);
   const { ref, inView } = useInView({
-    threshold: 0,
-    rootMargin: "100px", // triggers a bit before reaching the very bottom
+    threshold: 0.5,
+    triggerOnce: false,
   });
 
+  // Trigger load more when the observer element enters view
   useEffect(() => {
-    if (inView && !isLoading && hasMore) {
-      loadMorePosts();
+    if (inView && hasMore && !loading && !loadingMore) {
+      loadMore();
     }
-  }, [inView, isLoading, hasMore]);
-
-  const loadMorePosts = () => {
-    setIsLoading(true);
-    // Simulate network request delay
-    setTimeout(() => {
-      // Stop after generating ~15 posts just as a limit for the mock
-      if (posts.length > 15) {
-        setHasMore(false);
-        setIsLoading(false);
-        return;
-      }
-      
-      const newPosts = generateMorePosts(posts.length + 1);
-      setPosts(prev => [...prev, ...newPosts]);
-      setIsLoading(false);
-    }, 1000);
-  };
+  }, [inView, hasMore, loading, loadingMore, loadMore]);
 
   return (
-    <div className="max-w-3xl mx-auto space-y-4 pb-20">
+    <div className="max-w-3xl mx-auto space-y-6 pb-20">
       {/* Stories Section */}
       <StoryBar />
 
+      {/* Initial Loading State */}
+      {loading && (
+        <div className="space-y-6">
+          <PostSkeleton />
+          <PostSkeleton />
+          <PostSkeleton />
+        </div>
+      )}
+
+      {/* Error State */}
+      {error && !loading && (
+        <div className="py-8 text-center text-rose-500 font-bold uppercase tracking-widest text-sm drop-shadow-[0_0_8px_rgba(244,63,94,0.5)]">
+          {error}
+        </div>
+      )}
+
       {/* Feed Posts */}
-      {posts.map(post => (
-        <PostCard key={post.id} post={post} />
+      {!loading && posts.map((post, index) => (
+        <PostCard key={`${post.id}-${index}`} post={post} />
       ))}
-      
-      {/* Loading trigger element */}
-      {hasMore && (
-        <div ref={ref} className="py-8 flex justify-center items-center">
-          {isLoading ? (
-            <div className="flex space-x-3">
-              <div className="w-3 h-3 bg-cyan-400 rounded-full animate-ping shadow-[0_0_10px_rgba(34,211,238,0.8)] [animation-delay:-0.3s]"></div>
-              <div className="w-3 h-3 bg-purple-500 rounded-full animate-ping shadow-[0_0_10px_rgba(168,85,247,0.8)] [animation-delay:-0.15s]"></div>
-              <div className="w-3 h-3 bg-rose-500 rounded-full animate-ping shadow-[0_0_10px_rgba(244,63,94,0.8)]"></div>
+
+      {/* Load More Trigger / Loading More State */}
+      {hasMore && !error && (
+        <div ref={ref} className="py-10 flex flex-col items-center gap-4">
+          {loadingMore ? (
+            <div className="w-full space-y-6">
+              <PostSkeleton />
             </div>
           ) : (
-            <div className="text-slate-500 text-sm font-semibold tracking-widest uppercase">Scanning for more signals...</div>
+            <div className="h-20 w-full" /> // Target for observer
           )}
         </div>
       )}
 
+      {/* Empty Feed */}
+      {!loading && posts.length === 0 && !error && (
+        <div className="py-20 text-center flex flex-col items-center gap-4">
+          <div className="p-6 bg-slate-900/50 rounded-full border border-slate-800 text-slate-500">
+            <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+            </svg>
+          </div>
+          <p className="text-cyan-500 font-bold uppercase tracking-widest text-sm drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]">
+            No signals found in this sector.
+          </p>
+        </div>
+      )}
+
       {/* End of feed message */}
-      {!hasMore && (
-        <div className="py-10 text-center text-cyan-500 font-bold uppercase tracking-widest text-sm drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]">
-          End of Transmission. 🛑
+      {!hasMore && posts.length > 0 && !loading && (
+        <div className="py-10 text-center flex flex-col items-center gap-2">
+          <div className="h-[1px] w-20 bg-slate-800 mb-4" />
+          <p className="text-slate-500 font-bold uppercase tracking-widest text-[10px] opacity-50">
+            End of Transmission 🛑
+          </p>
         </div>
       )}
     </div>

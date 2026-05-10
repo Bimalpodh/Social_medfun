@@ -1,13 +1,20 @@
 import React, { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { X, Image as ImageIcon, Smile, Send } from "lucide-react";
+import { X, Image as ImageIcon, Smile, Send, Loader2 } from "lucide-react";
 import EmojiPicker from "emoji-picker-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useAuth } from "../../hooks/useAuth.jsx";
+import { uploadMedia } from "../../services/cloudinary";
+import { createPost } from "../../services/postService";
+import { getAvatarFallback } from "../../services/userService";
 
 export default function CreatePostModal({ isOpen, onClose }) {
+  const { currentUser } = useAuth();
   const [caption, setCaption] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
   
   const fileInputRef = useRef(null);
   const emojiPickerRef = useRef(null);
@@ -44,9 +51,17 @@ export default function CreatePostModal({ isOpen, onClose }) {
   const handleImageSelect = (e) => {
     const file = e.target.files[0];
     if (file) {
-      // Create a local URL for preview
-      const imageUrl = URL.createObjectURL(file);
-      setSelectedImage(imageUrl);
+      setSelectedFile(file);
+      const url = URL.createObjectURL(file);
+      setPreviewUrl(url);
+    }
+  };
+
+  const clearSelection = () => {
+    setSelectedFile(null);
+    setPreviewUrl(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
     }
   };
 
@@ -54,14 +69,41 @@ export default function CreatePostModal({ isOpen, onClose }) {
     setCaption(prev => prev + emojiData.emoji);
   };
 
-  const handlePost = () => {
-    console.log("Posting new content:", { caption, hasImage: !!selectedImage });
-    // Reset state and close
-    setCaption("");
-    setSelectedImage(null);
-    setShowEmojiPicker(false);
-    onClose();
+  const handlePost = async () => {
+    if (!currentUser) return;
+    
+    try {
+      setIsUploading(true);
+      
+      let mediaData = null;
+      if (selectedFile) {
+        mediaData = await uploadMedia(selectedFile);
+      }
+
+      await createPost({
+        userId: currentUser.id || currentUser.uid || "anonymous",
+        username: currentUser.username || "player",
+        userAvatar: currentUser.profileImage || currentUser.avatar || getAvatarFallback(currentUser.username || currentUser.id || currentUser.uid),
+        caption: caption,
+        mediaUrl: mediaData ? mediaData.url : null,
+        mediaType: mediaData ? mediaData.type : null,
+      });
+
+      // Reset state and close
+      setCaption("");
+      clearSelection();
+      setShowEmojiPicker(false);
+      onClose();
+    } catch (err) {
+      console.error("Failed to create post", err);
+      // Optional: use a toast notification here
+      alert("Failed to create post. Please try again.");
+    } finally {
+      setIsUploading(false);
+    }
   };
+
+  const isVideo = selectedFile?.type?.startsWith("video/");
 
   const modalContent = (
     <AnimatePresence>
@@ -98,7 +140,8 @@ export default function CreatePostModal({ isOpen, onClose }) {
               <h2 className="text-2xl font-black bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 bg-clip-text text-transparent tracking-tight">Create Post</h2>
               <button 
                 onClick={onClose}
-                className="p-2.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-all duration-200 hover:rotate-90"
+                disabled={isUploading}
+                className="p-2.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-all duration-200 hover:rotate-90 disabled:opacity-50"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -107,16 +150,20 @@ export default function CreatePostModal({ isOpen, onClose }) {
             {/* Body */}
             <div className="p-6 overflow-y-auto transition-all duration-300 custom-scrollbar flex-1 flex flex-col">
             
-            {/* User info mock */}
+            {/* User info */}
             <div className="flex items-center gap-4 mb-6">
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500 to-pink-500 rounded-full blur-sm opacity-50"></div>
-                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="Your avatar" className="w-12 h-12 rounded-full border-2 border-white shadow-sm relative z-10" />
+                <img 
+                  src={currentUser?.profileImage || currentUser?.avatar || getAvatarFallback(currentUser?.username || currentUser?.id || currentUser?.uid)} 
+                  alt="Your avatar" 
+                  className="w-12 h-12 rounded-full border-2 border-white shadow-sm relative z-10 object-cover" 
+                />
               </div>
               <div>
-                <p className="font-bold text-slate-800 text-lg leading-tight">John Doe</p>
+                <p className="font-bold text-slate-800 text-lg leading-tight">{currentUser?.name || "Player"}</p>
                 <div className="flex items-center gap-2 mt-0.5">
-                  <span className="text-[11px] font-bold px-2 py-0.5 bg-indigo-50 text-indigo-600 rounded-full border border-indigo-100">@johndoe</span>
+                  <span className="text-[11px] font-bold px-2 py-0.5 bg-indigo-50 text-indigo-600 rounded-full border border-indigo-100">@{currentUser?.username || "player"}</span>
                   <span className="text-xs text-slate-400 font-medium">• Public</span>
                 </div>
               </div>
@@ -126,30 +173,41 @@ export default function CreatePostModal({ isOpen, onClose }) {
               value={caption}
               onChange={(e) => setCaption(e.target.value)}
               placeholder="What's on your mind? Share your thoughts..."
-              className="w-full text-[1.1rem] border-none focus:ring-0 resize-none placeholder-slate-300 min-h-[220px] bg-transparent outline-none text-slate-700 leading-relaxed font-medium flex-1"
+              disabled={isUploading}
+              className="w-full text-[1.1rem] border-none focus:ring-0 resize-none placeholder-slate-300 min-h-[220px] bg-transparent outline-none text-slate-700 leading-relaxed font-medium flex-1 disabled:opacity-50"
               autoFocus
             />
 
-            {/* Image Preview Area */}
+            {/* Image/Video Preview Area */}
             <AnimatePresence>
-              {selectedImage && (
+              {previewUrl && (
                 <motion.div 
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
-                  className="relative mt-4 rounded-xl overflow-hidden border-2 border-slate-100 bg-slate-50 group shadow-sm"
+                  className="relative mt-4 rounded-xl overflow-hidden border-2 border-slate-100 bg-slate-50 group shadow-sm flex items-center justify-center bg-black/5"
                 >
-                  <img 
-                    src={selectedImage} 
-                    alt="Upload preview" 
-                    className="w-full max-h-80 object-contain"
-                  />
-                  <button
-                    onClick={() => setSelectedImage(null)}
-                    className="absolute top-3 right-3 p-2 bg-black/50 hover:bg-black/70 text-white rounded-full opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-110 backdrop-blur-sm"
-                  >
-                    <X className="w-4 h-4 text-white" />
-                  </button>
+                  {isVideo ? (
+                    <video 
+                      src={previewUrl} 
+                      controls 
+                      className="w-full max-h-80 object-contain"
+                    />
+                  ) : (
+                    <img 
+                      src={previewUrl} 
+                      alt="Upload preview" 
+                      className="w-full max-h-80 object-contain"
+                    />
+                  )}
+                  {!isUploading && (
+                    <button
+                      onClick={clearSelection}
+                      className="absolute top-3 right-3 p-2 bg-black/50 hover:bg-black/70 text-white rounded-full opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-110 backdrop-blur-sm"
+                    >
+                      <X className="w-4 h-4 text-white" />
+                    </button>
+                  )}
                 </motion.div>
               )}
             </AnimatePresence>
@@ -161,15 +219,17 @@ export default function CreatePostModal({ isOpen, onClose }) {
             <div className="flex items-center gap-2 relative">
               <input 
                 type="file" 
-                accept="image/*" 
+                accept="image/*,video/*" 
                 ref={fileInputRef} 
                 onChange={handleImageSelect}
+                disabled={isUploading}
                 className="hidden" 
               />
               <button 
                 onClick={() => fileInputRef.current?.click()}
-                className="p-2 text-indigo-500 hover:bg-indigo-50 rounded-full transition-all duration-200 hover:scale-110"
-                title="Add Image"
+                disabled={isUploading}
+                className="p-2 text-indigo-500 hover:bg-indigo-50 rounded-full transition-all duration-200 hover:scale-110 disabled:opacity-50"
+                title="Add Image or Video"
               >
                 <ImageIcon className="w-6 h-6" />
               </button>
@@ -177,7 +237,8 @@ export default function CreatePostModal({ isOpen, onClose }) {
               <div className="relative" ref={emojiPickerRef}>
                 <button 
                   onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-                  className={`p-2 rounded-full transition-all duration-200 hover:scale-110 ${showEmojiPicker ? 'bg-amber-100 text-amber-600' : 'text-slate-400 hover:bg-amber-50 hover:text-amber-500'}`}
+                  disabled={isUploading}
+                  className={`p-2 rounded-full transition-all duration-200 hover:scale-110 disabled:opacity-50 ${showEmojiPicker ? 'bg-amber-100 text-amber-600' : 'text-slate-400 hover:bg-amber-50 hover:text-amber-500'}`}
                   title="Add Emoji"
                 >
                   <Smile className="w-6 h-6" />
@@ -187,11 +248,20 @@ export default function CreatePostModal({ isOpen, onClose }) {
 
             <button
               onClick={handlePost}
-              disabled={!caption.trim() && !selectedImage}
-              className="group flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 text-white rounded-full font-bold shadow-md shadow-indigo-500/25 hover:shadow-lg hover:shadow-indigo-500/40 hover:-translate-y-0.5 disabled:opacity-50 disabled:hover:shadow-md disabled:hover:translate-y-0 disabled:cursor-not-allowed transition-all duration-300"
+              disabled={(!caption.trim() && !selectedFile) || isUploading}
+              className="group flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 text-white rounded-full font-bold shadow-md shadow-indigo-500/25 hover:shadow-lg hover:shadow-indigo-500/40 hover:-translate-y-0.5 disabled:opacity-50 disabled:hover:shadow-md disabled:hover:translate-y-0 disabled:cursor-not-allowed transition-all duration-300 min-w-[100px] justify-center"
             >
-              <span className="tracking-wide">Post</span>
-              <Send className="w-4 h-4 ml-1 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+              {isUploading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span className="tracking-wide">Deploying...</span>
+                </>
+              ) : (
+                <>
+                  <span className="tracking-wide">Post</span>
+                  <Send className="w-4 h-4 ml-1 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                </>
+              )}
             </button>
           </div>
           </div>

@@ -1,32 +1,55 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { useAuth } from './useAuth.jsx';
+import { savePost, unsavePost, subscribeToSavedPostIds, getPopulatedSavedPosts } from '../services/savedService';
 
 export function useSavedPosts() {
+  const { currentUser } = useAuth();
   const [savedIds, setSavedIds] = useState([]);
+  const [savedPosts, setSavedPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const stored = localStorage.getItem('savedPosts');
-    if (stored) {
-      try {
-        setSavedIds(JSON.parse(stored));
-      } catch (e) {
-        console.error("Failed to parse saved posts from storage");
-      }
+    if (!currentUser) {
+      setSavedIds([]);
+      setSavedPosts([]);
+      setLoading(false);
+      return;
     }
-  }, []);
 
-  const toggleSave = (postId) => {
-    setSavedIds((prev) => {
-      const isSaved = prev.includes(postId);
-      const updated = isSaved 
-        ? prev.filter((id) => id !== postId)
-        : [...prev, postId];
-      
-      localStorage.setItem('savedPosts', JSON.stringify(updated));
-      return updated;
+    setLoading(true);
+    const unsubscribe = subscribeToSavedPostIds(currentUser.id || currentUser.uid, async (ids) => {
+      setSavedIds(ids);
+      try {
+        const fullPosts = await getPopulatedSavedPosts(ids);
+        setSavedPosts(fullPosts);
+      } catch (err) {
+        console.error("Failed to populate saved posts", err);
+      } finally {
+        setLoading(false);
+      }
     });
-  };
 
-  const isSaved = (postId) => savedIds.includes(postId);
+    return () => unsubscribe();
+  }, [currentUser]);
 
-  return { savedIds, toggleSave, isSaved };
+  const toggleSave = useCallback(async (postId) => {
+    if (!currentUser) return;
+    const uid = currentUser.id || currentUser.uid;
+    const isSavedAlready = savedIds.includes(postId);
+    
+    try {
+      // Optimistic UI update could be manually forced here, but returning real ids helps integrity
+      if (isSavedAlready) {
+        await unsavePost(uid, postId);
+      } else {
+        await savePost(uid, postId);
+      }
+    } catch (err) {
+      console.error("Failed to toggle save", err);
+    }
+  }, [currentUser, savedIds]);
+
+  const isSaved = useCallback((postId) => savedIds.includes(postId), [savedIds]);
+
+  return { savedIds, savedPosts, toggleSave, isSaved, loading };
 }
