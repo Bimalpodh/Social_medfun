@@ -27,7 +27,7 @@
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/your-username/SocialMedFun.git
+git clone https://github.com/Bimalpodh/Social_medfun
 cd SocialMedFun
 ```
 
