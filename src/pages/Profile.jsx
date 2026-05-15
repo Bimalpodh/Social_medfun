@@ -142,7 +142,7 @@ export default function Profile() {
   }
 
   return (
-    <div className="-m-6 lg:-m-10 min-h-[calc(100vh-64px)] bg-slate-950 text-slate-200">
+    <div className="-m-6 lg:-m-10  min-h-[calc(100vh-64px)] bg-white text-slate-800">
       <div className="max-w-5xl mx-auto pb-20 animate-in fade-in duration-500">
         {/* Cover Image */}
         <div className="h-48 md:h-72 w-full relative rounded-b-3xl overflow-hidden group">
@@ -211,35 +211,35 @@ export default function Profile() {
           {/* User Details */}
           <div className="mt-4 sm:mt-6 space-y-4 text-center sm:text-left">
             <div>
-              <h1 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight flex items-center justify-center sm:justify-start gap-3">
+              <h1 className="text-2xl sm:text-4xl font-extrabold text-emerald-500 tracking-tight flex items-center justify-center sm:justify-start gap-3">
                 {profile.name}
                 <span className="text-xs px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 uppercase font-mono tracking-wider shadow-[0_0_8px_rgba(34,211,238,0.2)]">Lvl 99</span>
               </h1>
               <p className="text-cyan-400 font-medium text-lg mt-1">@{profile.username}</p>
             </div>
 
-            <p className="text-slate-300 max-w-2xl leading-relaxed mx-auto sm:mx-0 text-sm sm:text-base">
+            <p className="text-slate-600 max-w-2xl leading-relaxed mx-auto sm:mx-0 text-sm sm:text-base">
               {profile.bio}
             </p>
 
             {/* Stats */}
             <div className="flex gap-8 justify-center sm:justify-start pt-2">
                <div className="flex flex-col items-center sm:items-start group">
-                 <span className="text-xl sm:text-2xl font-bold text-white group-hover:text-cyan-400 transition-colors uppercase tracking-tight">{profile.stats.posts}</span>
+                 <span className="text-xl sm:text-2xl font-bold text-blue-600 group-hover:text-cyan-400 transition-colors uppercase tracking-tight">{profile.stats.posts}</span>
                  <span className="text-xs sm:text-sm text-slate-500 uppercase tracking-widest font-semibold">Quests</span>
                </div>
                <div 
                  onClick={() => profileUser?.followers?.length > 0 && setFollowListType('followers')}
                  className={`flex flex-col items-center sm:items-start group ${profileUser?.followers?.length > 0 ? 'cursor-pointer' : ''}`}
                >
-                 <span className="text-xl sm:text-2xl font-bold text-white group-hover:text-purple-400 transition-colors uppercase tracking-tight">{profile.stats.followers}</span>
+                 <span className="text-xl sm:text-2xl font-bold text-blue-600 group-hover:text-purple-400 transition-colors uppercase tracking-tight">{profile.stats.followers}</span>
                  <span className="text-xs sm:text-sm text-slate-500 uppercase tracking-widest font-semibold">Allies</span>
                </div>
                <div 
                  onClick={() => profileUser?.following?.length > 0 && setFollowListType('following')}
                  className={`flex flex-col items-center sm:items-start group ${profileUser?.following?.length > 0 ? 'cursor-pointer' : ''}`}
                >
-                 <span className="text-xl sm:text-2xl font-bold text-white group-hover:text-rose-400 transition-colors uppercase tracking-tight">{profile.stats.following}</span>
+                 <span className="text-xl sm:text-2xl font-bold text-blue-600 group-hover:text-rose-400 transition-colors uppercase tracking-tight">{profile.stats.following}</span>
                  <span className="text-xs sm:text-sm text-slate-500 uppercase tracking-widest font-semibold">Following</span>
                </div>
             </div>
@@ -287,7 +287,7 @@ export default function Profile() {
         </div>
 
         {/* Tabs */}
-        <div className="mt-8 border-t border-slate-800/60 bg-slate-900/30 sticky top-0 z-10 backdrop-blur-md">
+        <div className="mt-8 border-t border-slate-800/60 bg-gray-200 rounded-lg sticky top-0 z-10 backdrop-blur-md">
           <div className="flex justify-center gap-6 sm:gap-16">
             {TABS.map((tab) => {
               const Icon = tab.icon;
@@ -297,7 +297,7 @@ export default function Profile() {
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex items-center gap-2 py-4 relative font-semibold transition-colors ${
-                    isActive ? 'text-cyan-400' : 'text-slate-500 hover:text-slate-300'
+                    isActive ? 'text-cyan-800' : 'text-slate-900 hover:text-slate-300'
                   }`}
                 >
                   <Icon size={18} className={isActive ? 'drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]' : ''} />

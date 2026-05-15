@@ -96,7 +96,7 @@ function PostCard({ post }) {
   const authorAvatar = post.userAvatar || post.userProfileImage || post.avatar || post.author?.avatar || getAvatarFallback(post.username || post.userId);
 
   return (
-    <article className="bg-slate-900 border border-slate-800 rounded-2xl shadow-lg overflow-hidden group/card hover:border-slate-700 transition-colors">
+    <article className="bg-white border border-gray-200 rounded-2xl shadow-lg overflow-hidden group/card hover:border-slate-700 transition-colors">
       <div className="p-4">
         {/* Header */}
         <div className="flex items-start gap-3">
@@ -109,7 +109,7 @@ function PostCard({ post }) {
           <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between gap-3">
               <div className="truncate">
-                <div className="text-sm font-bold text-slate-100 truncate flex items-center gap-1.5">
+                <div className="text-sm font-bold text-slate-900 truncate flex items-center gap-1.5">
                   {authorName}
                   {authorName.includes("Neon") && (
                     <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_5px_rgba(34,211,238,0.8)]"></span>
@@ -122,14 +122,14 @@ function PostCard({ post }) {
         </div>
 
         {/* Content */}
-        <div className="mt-3 text-sm text-slate-300 leading-relaxed break-words">
+        <div className="mt-3 text-sm text-slate-900 leading-relaxed break-words">
           <p>{post.caption || post.text}</p>
         </div>
 
         {/* Media */}
         {post.mediaUrl && (
           <div 
-             className="mt-4 relative rounded-2xl overflow-hidden bg-slate-950 border border-slate-800/50 group/media cursor-pointer z-0 max-h-[600px] flex items-center justify-center"
+             className="mt-4 relative rounded-2xl overflow-hidden bg-white border border-gray-300 group/media cursor-pointer z-0 max-h-[600px] flex items-center justify-center"
              onClick={() => openModal()}
           >
             {post.mediaType === 'video' ? (

@@ -21,18 +21,18 @@ export default function Explore() {
   const { searchQuery, setSearchQuery, activeCategory, setActiveCategory, filteredPosts } = useExplorePosts();
 
   return (
-    <div className="min-h-[calc(100vh-64px)] bg-slate-950 text-slate-200 -m-6 lg:-m-10 p-6 lg:p-10 relative overflow-hidden">
+    <div className="min-h-[calc(100vh-64px)] bg-whitw text-slate-800 -m-6 lg:-m-10 p-6 lg:p-10 relative overflow-hidden">
       
       {/* Background Cyber Texture */}
-      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/micro-carbon.png')] opacity-10 pointer-events-none mix-blend-overlay z-0"></div>
+      <div className="absolute inset-0  opacity-10 pointer-events-none mix-blend-overlay z-0"></div>
 
       <div className="max-w-6xl mx-auto pb-20 relative z-10 animate-in fade-in duration-500">
         
         {/* Header Section */}
         <div className="mb-8 pt-4">
-          <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight flex items-center gap-3 drop-shadow-[0_0_15px_rgba(34,211,238,0.3)]">
+          <h1 className="text-3xl md:text-5xl font-black text-cyan-800 tracking-tight flex items-center gap-3 drop-shadow-[0_0_15px_rgba(34,211,238,0.3)]">
             Explore 
-            <span className="text-sm px-2 py-0.5 mt-2 rounded-md bg-purple-500/20 text-purple-400 border border-purple-500/30 uppercase font-mono tracking-widest shadow-[0_0_8px_rgba(168,85,247,0.3)]">Network</span>
+            <span className="text-sm px-2 py-0.5 mt-2 rounded-md bg-purple-500/20 text-purple-600 border border-purple-500/30 uppercase font-mono tracking-widest shadow-[0_0_8px_rgba(168,85,247,0.3)]">Network</span>
           </h1>
           <p className="text-cyan-400 text-sm md:text-base mt-2 font-medium">Discover trending content, new creators, and legendary drops across the net.</p>
         </div>
@@ -40,15 +40,15 @@ export default function Explore() {
         {/* Search & Categories */}
         <div className="mb-8 space-y-6">
           <div className="max-w-2xl relative group">
-            <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-full blur opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
-            <div className="relative flex items-center bg-slate-900/80 border border-slate-700 backdrop-blur-md rounded-full px-5 py-3 group-focus-within:border-cyan-500 group-focus-within:ring-1 group-focus-within:ring-cyan-500 transition-all">
+            <div className="absolute inset-0 rounded-full blur opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
+            <div className="relative flex items-center  border border-slate-700 backdrop-blur-md rounded-full px-5 py-3 group-focus-within:border-cyan-500 group-focus-within:ring-1 group-focus-within:ring-cyan-500 transition-all">
               <Search className="w-5 h-5 text-slate-500 group-focus-within:text-cyan-400 transition-colors mr-3" />
               <input 
                 type="text" 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search records by caption or user..." 
-                className="w-full bg-transparent text-slate-200 placeholder-slate-500 focus:outline-none text-base"
+                className="w-full bg-transparent text-slate-900 placeholder-slate-500 focus:outline-none text-base"
               />
             </div>
           </div>
@@ -62,10 +62,10 @@ export default function Explore() {
                 <button
                   key={cat.id}
                   onClick={() => setActiveCategory(cat.id)}
-                  className={`flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-sm tracking-wide transition-all whitespace-nowrap flex-shrink-0 ${
+                  className={`flex items-center m-2 gap-2 px-5 py-2.5 rounded-full font-bold text-sm tracking-wide transition-all whitespace-nowrap flex-shrink-0 ${
                     isActive 
                       ? 'bg-cyan-500 text-slate-950 shadow-[0_0_15px_rgba(34,211,238,0.5)] scale-105' 
-                      : 'bg-slate-900/50 border border-slate-700/50 text-slate-400 hover:text-slate-200 hover:bg-slate-800 hover:border-slate-600 hover:shadow-[0_0_10px_rgba(255,255,255,0.05)]'
+                      : 'bg-white border border-slate-700/50 text-slate-900 hover:text-slate-200 hover:bg-slate-800 hover:border-slate-600 hover:shadow-[0_0_10px_rgba(255,255,255,0.05)]'
                   }`}
                 >
                   <Icon className={`w-4 h-4 ${isActive ? 'text-slate-950' : ''}`} />

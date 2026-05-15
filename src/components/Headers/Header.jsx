@@ -54,8 +54,8 @@ export default function Header() {
       <header
         className={`fixed top-0 w-full z-50 transition-all duration-300 ${
           scrolled
-            ? "bg-slate-950/85 backdrop-blur-xl border-b border-slate-800 shadow-lg"
-            : "bg-slate-900/80 backdrop-blur-md border-b border-slate-800"
+            ? " bg-white/80 backdrop-blur-xl border-b border-gray-200 shadow-lg"
+            : "bg-white/80 backdrop-blur-md border-b border-gray-200"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -64,7 +64,7 @@ export default function Header() {
             <div className="flex items-center flex-shrink-0">
               <NavLink
                 to="/"
-                className="text-2xl font-black bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent tracking-tight"
+                className="text-2xl font-black text-cyan-600  bg-clip-text  tracking-tight"
               >
                 SocialNest
               </NavLink>
@@ -72,17 +72,17 @@ export default function Header() {
 
             {/* Search */}
             <div className="hidden md:flex flex-1 max-w-xl relative z-50">
-              <div className="flex items-center bg-slate-800/70 rounded-2xl px-4 py-3 border border-slate-700 w-full focus-within:border-cyan-500 transition-all">
+              <div className="flex items-center bg-white  rounded-2xl px-4 py-3 border border-slate-700 w-full focus-within:border-cyan-500 transition-all">
                 <Search
                   size={18}
-                  className="text-slate-400 flex-shrink-0"
+                  className="text-black flex-shrink-0"
                 />
 
                 <input
                   placeholder="Search users..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="bg-transparent ml-3 text-sm outline-none w-full text-slate-100 placeholder-slate-500"
+                  className="bg-transparent ml-3 text-sm outline-none w-full text-black placeholder-slate-500"
                 />
 
                 {loading && (
@@ -97,7 +97,7 @@ export default function Header() {
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 8 }}
-                    className="absolute top-16 w-full bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl"
+                    className="absolute top-16 w-full bg-white border border-slate-800 rounded-2xl overflow-hidden shadow-2xl"
                   >
                     <div className="max-h-[350px] overflow-y-auto">
                       {results.length > 0 ? (
@@ -119,11 +119,11 @@ export default function Header() {
                                 )
                               }
                               alt={user.username}
-                              className="w-11 h-11 rounded-full object-cover border border-slate-700"
+                              className="w-11 h-11  rounded-full object-cover border border-slate-700"
                             />
 
                             <div>
-                              <p className="text-white font-semibold">
+                              <p className="text-blue-400 font-semibold">
                                 {user.username}
                               </p>
 
@@ -176,7 +176,7 @@ export default function Header() {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
-                      className="absolute right-0 mt-3 w-[360px] bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden"
+                      className="absolute right-0 mt-3 w-[360px] bg-slate-900 border border-gray-200 rounded-2xl shadow-2xl overflow-hidden"
                     >
                       <div className="p-4 border-b border-slate-800">
                         <h3 className="text-white font-bold">

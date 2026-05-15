@@ -8,7 +8,7 @@ export default function Saved() {
   const { savedPosts, loading } = useSavedPosts();
 
   return (
-    <div className="min-h-[calc(100vh-64px)] bg-slate-950 text-slate-200 -m-6 lg:-m-10 p-6 lg:p-10 relative overflow-hidden">
+    <div className="min-h-[calc(100vh-64px)] bg-white text-slate-800 -m-6 lg:-m-10 p-6 lg:p-10 relative overflow-hidden">
       {/* Background Cyber Texture */}
       <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/micro-carbon.png')] opacity-10 pointer-events-none mix-blend-overlay z-0"></div>
 
@@ -16,12 +16,12 @@ export default function Saved() {
         
         {/* Header Section */}
         <div className="mb-8 pt-4">
-          <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight flex items-center gap-3 drop-shadow-[0_0_15px_rgba(251,191,36,0.3)]">
-            <Bookmark className="w-8 h-8 md:w-10 md:h-10 text-amber-400" />
+          <h1 className="text-3xl md:text-5xl font-black text-cyan-700 tracking-tight flex items-center gap-3 drop-shadow-[0_0_15px_rgba(251,191,36,0.3)]">
+            <Bookmark className="w-8 h-8 md:w-10 md:h-10 text-emerald-500" />
             Saved 
-            <span className="text-sm px-2 py-0.5 mt-2 rounded-md bg-amber-500/20 text-amber-400 border border-amber-500/30 uppercase font-mono tracking-widest shadow-[0_0_8px_rgba(251,191,36,0.3)]">Archive</span>
+            <span className="text-sm px-2 py-0.5 mt-2 rounded-md bg-amber-500/20 text-shadow-emerald-500 border border-amber-500/30 uppercase font-mono tracking-widest shadow-[0_0_8px_rgba(251,191,36,0.3)]">Archive</span>
           </h1>
-          <p className="text-amber-400/80 text-sm md:text-base mt-2 font-medium">Your personal vault of encrypted transmissions.</p>
+          <p className="text-emerald-500 text-sm md:text-base mt-2 font-medium">Your personal vault of encrypted transmissions.</p>
         </div>
 
         {/* Content Area */}

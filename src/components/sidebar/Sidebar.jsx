@@ -10,7 +10,7 @@ const SidebarItem = ({ icon: Icon, label, to, action }) => {
   const content = (isActive) => (
     <>
       {isActive && (
-        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-transparent pointer-events-none"></div>
+        <div className="absolute inset-0   to-transparent pointer-events-none"></div>
       )}
       <Icon className={`w-5 h-5 transition-transform duration-300 ${isActive ? 'drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]' : 'group-hover:scale-110 group-hover:drop-shadow-[0_0_5px_rgba(34,211,238,0.5)]'}`} />
       <span className="text-md tracking-wide">{label}</span>
@@ -68,7 +68,7 @@ export default function Sidebar() {
   return (
     <aside className="hidden md:flex flex-col w-64
                      h-[calc(100vh-64px)] sticky top-16 z-30
-                     border-r border-slate-800/80 bg-slate-950/95 backdrop-blur-xl">
+                     border-r border-gray-300 bg-white backdrop-blur-xl">
       <div className="flex-1 flex flex-col overflow-y-auto custom-scrollbar overflow-x-hidden">
         <div className="p-4 space-y-2 mt-2">
           {menuItems.map(item => (
@@ -82,7 +82,7 @@ export default function Sidebar() {
       </div>
 
       {/* User Shortcut */}
-      <div className="p-4 border-t border-slate-800/80 bg-slate-900/30 font-sans">
+      <div className="p-4 border-t border-gray-200 font-sans">
         <div className="flex items-center gap-3 p-3 rounded-2xl hover:bg-slate-800 cursor-pointer transition-colors border border-transparent hover:border-slate-700/50 group">
           <div className="relative">
              <div className="absolute inset-0 bg-cyan-400 rounded-full blur opacity-50 group-hover:opacity-100 transition duration-300 animate-pulse"></div>

@@ -26,11 +26,11 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4 relative overflow-hidden">
-      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/micro-carbon.png')] opacity-20 pointer-events-none mix-blend-overlay"></div>
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-cyan-500/20 rounded-full blur-[120px] pointer-events-none"></div>
+    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+      <div className="absolute inset-0  opacity-20 pointer-events-none mix-blend-overlay"></div>
+      <div className="absolute top-1/2 left-1/2  w-[800px] h-[800px]  rounded-full blur-[120px] pointer-events-none"></div>
       
-      <div className="bg-slate-900/80 backdrop-blur-xl border border-slate-700 p-8 sm:p-10 rounded-3xl w-full max-w-md relative z-10 shadow-[0_0_50px_rgba(0,0,0,0.5)]">
+      <div className=" bg-cyan-800 backdrop-blur-xl border border-slate-700 p-8 sm:p-10 rounded-3xl w-full max-w-md relative z-10 shadow-[0_0_50px_rgba(0,0,0,0.5)]">
         
         {/* Animated Cyberpunk Logo Assembly */}
         <div className="flex flex-col items-center justify-center mb-8 relative">
@@ -40,8 +40,8 @@ export default function Login() {
             <div className="absolute w-16 h-16 rounded-full border-b-2 border-l-2 border-purple-500 animate-[spin_2s_linear_infinite_reverse] shadow-[0_0_15px_rgba(168,85,247,0.5)]"></div>
             
             {/* Core Icon */}
-            <div className="w-14 h-14 bg-slate-900 rounded-full flex items-center justify-center relative z-10 border border-slate-700 shadow-[inset_0_0_15px_rgba(34,211,238,0.3)]">
-              <Cpu className="w-7 h-7 text-cyan-400 drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]" />
+            <div className="w-14 h-14 rounded-full flex items-center justify-center relative z-10  shadow-[inset_0_0_15px_rgba(34,211,238,0.3)]">
+             <img src="./Social-Nest-Logo.png" className='rounded-full' alt="logo" />
             </div>
           </div>
           
