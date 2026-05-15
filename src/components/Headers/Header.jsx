@@ -55,7 +55,7 @@ export default function Header() {
         className={`fixed top-0 w-full z-50 transition-all duration-300 ${
           scrolled
             ? " bg-white/80 backdrop-blur-xl border-b border-gray-200 shadow-lg"
-            : "bg-white/80 backdrop-blur-md border-b border-gray-200"
+            : "bg-white/80 backdrop-blur-md border-b border-slate-800"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -123,7 +123,7 @@ export default function Header() {
                             />
 
                             <div>
-                              <p className="text-blue-400 font-semibold">
+                              <p className="text-blue-900 font-semibold">
                                 {user.username}
                               </p>
 
@@ -161,9 +161,9 @@ export default function Header() {
                   onClick={() =>
                     setIsNotificationsOpen(!isNotificationsOpen)
                   }
-                  className="relative p-3 rounded-2xl bg-slate-800/50 hover:bg-slate-800 transition-all"
+                  className="relative p-3 rounded-2xl bg-gray-200 hover:bg-slate-400 transition-all"
                 >
-                  <Bell size={20} className="text-slate-300" />
+                  <Bell size={20} className="text-orange-600" />
 
                   {notifications.some((n) => !n.read) && (
                     <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-cyan-400 rounded-full"></span>
@@ -201,7 +201,7 @@ export default function Header() {
                               />
 
                               <div className="flex-1">
-                                <p className="text-sm text-slate-300">
+                                <p className="text-sm text-slate-900">
                                   <span className="font-semibold text-white">
                                     {notif.user}
                                   </span>{" "}
@@ -230,7 +230,7 @@ export default function Header() {
 
               {/* Mobile */}
               <button
-                className="md:hidden p-2 rounded-xl text-slate-400 hover:bg-slate-800"
+                className="md:hidden p-2 rounded-xl text-slate-800 hover:bg-slate-800"
                 onClick={() => setMenuOpen(!menuOpen)}
               >
                 {menuOpen ? <X size={24} /> : <Menu size={24} />}

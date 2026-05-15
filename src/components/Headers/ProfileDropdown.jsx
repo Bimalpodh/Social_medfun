@@ -70,7 +70,7 @@ export default function ProfileDropdown() {
       {/* Trigger */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-3 px-2 py-1.5 rounded-2xl bg-slate-800/40 hover:bg-slate-800/70 border border-slate-700/50 hover:border-cyan-500/40 transition-all duration-300 group"
+        className="flex items-center gap-3 px-2 py-1.5 rounded-2xl bg-white hover:bg-slate-800/70 border border-slate-700/50 hover:border-cyan-500/40 transition-all duration-300 group"
       >
         <div className="relative">
           {currentUser.profileImage ? (
@@ -91,7 +91,7 @@ export default function ProfileDropdown() {
         </div>
 
         <div className="hidden xl:flex flex-col items-start min-w-[120px]">
-          <span className="text-sm font-semibold text-white leading-none">
+          <span className="text-sm font-semibold text-cyan-900 leading-none">
             {currentUser.name}
           </span>
 

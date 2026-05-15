@@ -52,8 +52,8 @@ export default function Register() {
           </div>
           
           {/* Brand Name */}
-          <h1 className="text-4xl font-black mt-6 tracking-tighter bg-gradient-to-br from-purple-400 via-purple-600 to-rose-500 bg-clip-text text-transparent drop-shadow-[0_0_15px_rgba(168,85,247,0.4)]">
-            SOCIAL<span className="text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]">NEST</span>
+          <h1 className="text-4xl font-black mt-6 tracking-tighter bg-gradient-to-br from-emerald-300 via-lime-400 to-rose-200 bg-clip-text text-transparent drop-shadow-[0_0_15px_rgba(168,85,247,0.4)]">
+            SOCIAL<span className="text-white drop-shadow-[0_0_8px_rgba(255,0,205,0.3)]">NEST</span>
           </h1>
           <div className="h-0.5 w-12 bg-purple-500 mt-4 shadow-[0_0_10px_rgba(168,85,247,0.8)]"></div>
         </div>
@@ -114,14 +114,14 @@ export default function Register() {
           
           <button 
             disabled={loading}
-            className="w-full bg-purple-500 hover:bg-purple-400 text-white font-black tracking-widest uppercase py-3 rounded-xl transition-all mt-2 shadow-[0_0_15px_rgba(168,85,247,0.4)] hover:shadow-[0_0_25px_rgba(168,85,247,0.6)] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-emerald-500 hover:bg-emerald-400 text-white font-black tracking-widest uppercase py-3 rounded-xl transition-all mt-2 shadow-[0_0_15px_rgba(168,85,247,0.4)] hover:shadow-[0_0_25px_rgba(168,85,247,0.6)] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? 'Compiling DNA...' : 'Initialize Player'}
           </button>
         </form>
         
         <p className="text-center text-slate-400 mt-8 text-sm font-medium">
-          Already in the database? <Link to="/login" className="text-purple-400 hover:text-purple-300 font-bold ml-1 hover:underline uppercase tracking-wide">Jack In</Link>
+          Already in the database? <Link to="/login" className="text-purple-400 hover:text-purple-300 font-bold ml-1 hover:underline uppercase tracking-wide">Log In</Link>
         </p>
       </div>
     </div>

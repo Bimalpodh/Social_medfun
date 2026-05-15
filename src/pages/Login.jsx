@@ -47,13 +47,13 @@ export default function Login() {
           
           {/* Brand Name */}
           <h1 className="text-4xl font-black mt-6 tracking-tighter bg-gradient-to-br from-cyan-300 via-cyan-500 to-purple-600 bg-clip-text text-transparent drop-shadow-[0_0_15px_rgba(34,211,238,0.4)]">
-            SOCIAL<span className="text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]">NEST</span>
+            SOCIAL<span className="text-white drop-shadow-[0_0_8px_rgba(255,0,205,0.8)]">NEST</span>
           </h1>
           <div className="h-0.5 w-12 bg-cyan-500 mt-4 shadow-[0_0_10px_rgba(34,211,238,0.8)]"></div>
         </div>
         
-        <h2 className="text-2xl font-black text-white text-center tracking-tight mb-2 uppercase drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]">Jack Into The Grid</h2>
-        <p className="text-cyan-500/80 text-center text-sm font-medium mb-8 uppercase tracking-widest">Enter your coordinates. The neon realm awaits.</p>
+        <h2 className="text-2xl font-black text-white text-center tracking-tight mb-2 uppercase drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]">Welcome To The Nest</h2>
+        <p className="text-cyan-500/80 text-center text-sm font-medium mb-8 uppercase tracking-widest">Enter your credentials to continue..</p>
         
         {error && <div className="bg-rose-500/10 border border-rose-500 text-rose-500 p-3 rounded-lg text-sm mb-6 font-medium text-center">{error}</div>}
         
@@ -91,7 +91,7 @@ export default function Login() {
         </form>
         
         <p className="text-center text-slate-400 mt-8 text-sm font-medium">
-          No player profile yet? <Link to="/register" className="text-cyan-400 hover:text-cyan-300 font-bold ml-1 hover:underline uppercase tracking-wide">Spawn Here</Link>
+          No user profile yet? <Link to="/register" className="text-cyan-400 hover:text-cyan-300 font-bold ml-1 hover:underline uppercase tracking-wide">Sign In Here</Link>
         </p>
       </div>
     </div>
